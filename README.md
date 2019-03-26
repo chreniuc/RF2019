@@ -6,3 +6,4 @@
  - Lab2 - *Not finished*
  - Lab3 - *Finished*
  - Lab4 - *Finished*
+ - Lab5 - *Not Finished* - The third exercise is optional.
