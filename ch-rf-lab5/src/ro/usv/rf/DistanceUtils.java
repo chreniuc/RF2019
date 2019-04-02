@@ -65,4 +65,30 @@ public class DistanceUtils {
 	// Use divide etimpera for getting the max k for 90% accouracy? We already know the result, and we should see the max k that we get that result.
 	// 
 	// 
+	
+	static int get_max_knn(double[] distances, String[][] learningSet, String class_name)
+	{
+		int max_knn = learningSet.length;
+		int left = 0;
+		int right = max_knn;
+		int result = 0;
+		while(left+3 < right)
+		{
+			int mid = (left+right)/2;
+			String class_name_result = DistanceUtils.getNNClass(mid, distances, learningSet);
+			//System.out.println("Left: " + left + " Right: " + right +" Mid: " + mid + "   " + class_name_result);
+			if( class_name_result.compareTo(class_name) == 0)
+			{
+				left = mid-1;
+			}
+			else
+			{
+				right = mid+1;
+			}
+			result = mid;
+		}
+		//System.out.println("Max knn = "  + result);
+		
+		return result;
+	}
 }

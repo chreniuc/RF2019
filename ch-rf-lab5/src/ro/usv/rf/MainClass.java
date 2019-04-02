@@ -39,13 +39,18 @@ public class MainClass {
 				first_set = DistanceUtils.getNNClass(kn_cases[i], distance_array[0], learningSet);
 				System.out.println("First set,  k =  " + kn_cases[i] + " has class: " + first_set); 
 			}
+			System.out.println("Max knn: " + DistanceUtils.get_max_knn(distance_array[0], learningSet, "Suceava"));
+			// Suceava ^
 			System.out.println();
+			
 			
 			for(int i=0; i < kn_cases.length; i++)
 			{
 				first_set = DistanceUtils.getNNClass(kn_cases[i], distance_array[1], learningSet);
 				System.out.println("Second set,  k =  " + kn_cases[i] + " has class: " + first_set); 
 			}
+			System.out.println("Max knn: " + DistanceUtils.get_max_knn(distance_array[1], learningSet, "Valcea"));
+			// Valcea ^
 			
 			System.out.println();
 			for(int i=0; i < kn_cases.length; i++)
@@ -53,8 +58,9 @@ public class MainClass {
 				first_set = DistanceUtils.getNNClass(kn_cases[i], distance_array[2], learningSet);
 				System.out.println("Third set, k = " + kn_cases[i] + " has class: " + first_set); 
 			}
-			
+			System.out.println("Max knn: " + DistanceUtils.get_max_knn(distance_array[2], learningSet, "Brasov"));
 			System.out.println("Done"); 
+			// Brasov ^
 			
 			
 		} catch (USVInputFileCustomException e) {
