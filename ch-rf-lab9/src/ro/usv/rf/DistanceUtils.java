@@ -172,4 +172,93 @@ public class DistanceUtils {
 		
 		return "ds";
 	}
+	
+	/**
+	 * @brief Used in the next method.
+	 */
+	public static double getGeneralizedEuclidianDistancefromDouble(double[] learninSet1, String[] learninSet2)
+	{
+		double result = 0;
+		for(int i =0; i < learninSet1.length; i++)
+		{
+			result += Math.pow(Double.valueOf(learninSet1[i]) - Double.valueOf(learninSet2[i]),2); 
+		}
+		result = Math.sqrt(result);
+		return result;
+	}
+	/**
+	 * @brief This a generalized version, you can have any number of coordinates for the input patterns.
+	 */
+	public static void dynamic_kernels(int M, double[][] distances, String[][] learninSet1) {
+		int iClass[] = new int[learninSet1.length];
+		int iClass_old[] = new int[learninSet1.length];
+		int kernels[] = new int[M];
+		int classCounte[] = new int[M];
+
+		Arrays.fill(iClass, 0);
+		Arrays.fill(iClass_old, 0);
+		Arrays.fill(classCounte, 0);
+		for (int i = 0; i < M; i++) {
+			kernels[i] = i;
+		}
+		boolean not_done = true;
+		while (not_done) {
+			for (int i = 0; i < learninSet1.length; i++) // for every element, calculate the minimum distance to a
+															// kernel
+			{
+				double min_distance = Double.MAX_VALUE;
+				for (int j = 0; j < M; j++) {
+					if (min_distance > distances[i][kernels[j]]) {
+						min_distance = distances[i][kernels[j]];
+						iClass[i] = j;
+					}
+				}
+			}
+			// Prepare to calculate the gravity center
+			Arrays.fill(classCounte, 0);
+			for (int i = 0; i < iClass.length; i++) {
+				classCounte[iClass[i]]++;
+			}
+
+			// Calculate the new kernel
+			for (int i = 0; i < M; i++) {
+				double coords[] = new double[learninSet1[0].length];
+				Arrays.fill(coords, 0);
+				for (int j = 0; j < iClass.length; j++) {
+					if (iClass[j] == kernels[i]) {
+						for (int k = 0; k < learninSet1[0].length; k++) {
+							coords[k] += 1.0 * Double.valueOf(learninSet1[j][k]) / classCounte[i];
+						}
+					}
+				}
+				// Get the closes element to the kernel
+				double min_distance = Double.MAX_VALUE;
+				for (int j = 0; j < learninSet1.length; j++) {
+					if (iClass[j] == kernels[i]) {
+						double distance = getGeneralizedEuclidianDistancefromDouble(coords, learninSet1[j]);
+						if (distance < min_distance) {
+							min_distance = distance;
+							kernels[i] = j;
+						}
+					}
+				}
+			}
+
+			not_done = false;
+			// See if the last iclass was the same
+			for (int i = 0; i < iClass.length; i++) {
+				if (iClass_old[i] != iClass[i]) {
+					not_done = true;
+				}
+			}
+			// Clone the iclass
+			for (int i = 0; i < iClass.length; i++) {
+				iClass_old[i] = iClass[i];
+			}
+		}
+
+		for (int i = 0; i < iClass.length; i++) {
+			System.out.println(iClass[i]);
+		}
+	}
 }
