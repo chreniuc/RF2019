@@ -87,4 +87,48 @@ public class DistanceUtils
 		System.out.println("Class = " + class_number);
 		return class_number;
 	}
+	
+		public static double[][] getWArray(HashMap<Double, Integer> class_counter, double[][] learningSet) {
+
+		double w_array[][] = new double[class_counter.size() + 1][class_counter.size()];
+
+		for (int i = 0; i < w_array.length; i++) {
+			Arrays.fill(w_array[i], 0);
+		}
+
+		for (int i = 0; i < learningSet.length; i++) {
+			for (int j = 0; j < learningSet[0].length - 1; j++) {
+				System.out.println("I= " + i + ", J= " + j);
+				w_array[Double.valueOf(learningSet[i][learningSet[0].length - 1]).intValue()][j] += 1.0
+						* Double.valueOf(learningSet[i][j])
+						/ class_counter.get(learningSet[i][learningSet[0].length - 1]);
+			}
+		}
+		for (int i = 1; i < w_array.length; i++) {
+			for (int j = 0; j < w_array[j].length - 1; j++) {
+				w_array[i][w_array[j].length - 1] -= 0.5 * (Math.pow(w_array[i][j], 2));
+			}
+		}
+
+		return w_array;
+	}
+
+	public static double get_class(double[][] w_matrix) {
+
+		double[] x = { 4, 5, 1 };
+		double MAX_value = Double.MIN_VALUE;
+		double class_num = 0;
+		for (int i = 1; i < w_matrix.length; i++) {
+			double psi = 0;
+			for (int j = 0; j < w_matrix[0].length; j++) {
+				psi += w_matrix[i][j] * x[j];
+			}
+			if (MAX_value < psi) {
+				MAX_value = psi;
+				class_num = i;
+			}
+		}
+		System.out.println("Clasa este: " + class_num);
+		return 0;
+	}
 }
